@@ -240,6 +240,8 @@ nnoremap <silent> <Right> :call RightSeparator(2)<cr>
 " Other Settings
 au FileType perl set filetype=prolog
 
+
+
 " signature, email
 iabbrev ssig Titouan Teyssier<cr>titouan dot teyssier at gmail dot com<cr>
 iabbrev @@ titouan dot teyssier at gmail dot com
