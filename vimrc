@@ -6,30 +6,27 @@
 "	--enable-pythoninterp \
 "	--enable-python3interp
 
-let mapleader = ","
-
 set nocompatible
 
-" plugins {{{
+" Plugins {{{
 filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" let Vundle manage itself
 Plugin 'VundleVim/Vundle.vim'
 
 " git repos
-Plugin 'tpope/vim-fugitive'
+" TODO: learn to use it
+"Plugin 'tpope/vim-fugitive'
 
 " file explorer
-Plugin 'sjbach/lusty'
+" TODO: learn to use it
+"Plugin 'sjbach/lusty'
 
 " syntax
 Plugin 'sheerun/vim-polyglot'
 Plugin 'vim-scripts/clips.vim'
-
-" prolog
 Plugin 'mxw/vim-prolog'
 
 " completition
@@ -39,37 +36,36 @@ Plugin 'Valloric/YouCompleteMe'
 "python install.py --clang-completer --go-completer --java-completer
 
 " theme
-Plugin 'ajmwagar/vim-deus'
+" Plugin 'ajmwagar/vim-deus'
+Plugin 'fatih/molokai'
+
+Plugin 'itchyny/lightline.vim'
 
 " animated scroll
 "Plugin 'joeytwiddle/sexy_scroller.vim'
 
+Plugin 'tpope/vim-commentary'
+
 call vundle#end()
 " }}}
 
+" Color {{{
+syntax enable
 set t_Co=256
-colorscheme deus
+set background=dark
+let g:molokai_original = 1
+let g:rehash256 = 1
+colorscheme molokai
+"}}}
 
-" splits 101 {{{
+" Splits 101 {{{
 set splitbelow
 set splitright
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W>h
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-L> <C-W>l
 " }}}
-
-
-" Affichage
-set title
-
-"set relativenumber
-set number
-set wrap
-
-nnoremap <Leader>zz :let &scrolloff=999-&scrolloff<CR>
-
-"set scrolloff=3
 
 " Recherche {{{
 set ignorecase
@@ -77,45 +73,39 @@ set smartcase
 
 " most of the time I want to do smth on the word I am currently on
 nnoremap * *N
+nnoremap n nzz
+nnoremap N Nzz
 set incsearch
 set hlsearch
 " }}}
 
-" Beep
-set novisualbell
-set noerrorbells
-
-" active le comportement 'habituel' de la touche retour en arriere
-set backspace=indent,eol,start
-
-" Cache les fichiers lors de l'ouverture d'autres fichiers
-set hidden
-
-" Active la coloration syntaxique
-syntax on
-au FileType perl set filetype=prolog
-
+" Settings {{{
 " Active les comportements specifiques aux types de fichiers comme la syntaxe et l'indentation
 filetype on
 filetype plugin on
 filetype indent on
-
-" theme solarized
-"set background=dark
-"set termguicolors
-"colorscheme solarized
-
+" active le comportement 'habituel' de la touche retour en arriere
+set backspace=indent,eol,start
 " settings for hidden chars
 set listchars=tab:>\ ,trail:▓
-
 " show hidden chars
 set list
-
 set mouse=a
+set clipboard=unnamedplus
+set tabstop=4
+set shiftwidth=4
+set hidden
+set noerrorbells
+set novisualbell
+set number
+set wrap
+" }}}
 
-
+" Mappings {{{
+let mapleader = ","
 " Remap de la touche echap pour revenir en mode normal
 inoremap jk <Esc>
+vnoremap jk <Esc>
 
 " Acces plus rapide au registre:
 inoremap <leader>r <C-r>
@@ -126,31 +116,35 @@ nnoremap K :m .-2<CR>==
 
 " quick edit and reload of vimrc
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <silent> <leader>sv :source $MYVIMRC<cr><cr>
 
 " Instant Hide mode
 nnoremap <leader>w myggg?G`y
-inoremap <leader>w <esc>myggg?G`ya
 
 " Highlight from search are no longer a problem whith that map
-nnoremap <Space> :noh<cr>
+nnoremap <leader><Space> :noh<cr>
+" center on space
+nnoremap <Space> zz
 
-" signature, email
-iabbrev ssig Titouan Teyssier<cr>titouan dot teyssier at gmail dot com<cr>
-iabbrev @@ titouan dot teyssier at gmail dot com
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+" make navigation easier
+nnoremap j gj
+nnoremap k gk
 
-" Make vim use the system clipboard as primary register for copy, cut and
-" paste
-set number
-set clipboard=unnamedplus
+nnoremap <leader>v :only<cr>
+
+nnoremap <leader>zz :let &scrolloff=999-&scrolloff<CR>
+nnoremap <cr> o<esc>k
+nnoremap <C-cr> O<esc>j
 
 
-set tabstop=4
-set shiftwidth=4
+" }}}
 
-" status line {{{
+" Status line {{{
 set laststatus=2 " always show the status line
-set statusline=%<%f%y%h%m%r%=%3c,%3l/%L
+set noshowmode
+set showcmd
 " }}}
 
 " vimscript language settings {{{
@@ -165,7 +159,7 @@ augroup end
 " modifying a window's height change the position of the bottom separator.
 
 " move the left separator right(+) and left(-)
-function LeftSeparator(deltaW)
+function! LeftSeparator(deltaW)
 	if !TestNeighbor("h")
 		return
 	endif
@@ -176,7 +170,7 @@ function LeftSeparator(deltaW)
 endfunction
 
 " move the right separator right(+) and left(-)
-function RightSeparator(deltaW)
+function! RightSeparator(deltaW)
 	if !TestNeighbor("l")
 		return
 	endif
@@ -189,7 +183,7 @@ endfunction
 
 
 " move the bottom separator of the window up(+) and down(-)
-function BottomSeparator(deltaW)
+function! BottomSeparator(deltaW)
 	if !TestNeighbor("j")
 		return
 	endif
@@ -201,7 +195,7 @@ function BottomSeparator(deltaW)
 endfunction
 
 " move the top separator of the window up and down
-function TopSeparator(deltaW)
+function! TopSeparator(deltaW)
 	if !TestNeighbor("k")
 		return
 	endif
@@ -211,7 +205,7 @@ function TopSeparator(deltaW)
 	execute l:currentWindow . "wincmd w"
 endfunction
 
-function TestNeighbor(direction)
+function! TestNeighbor(direction)
 	let l:currentWindow = winnr()
 	execute "wincmd " . a:direction
 	let l:neighbor = winnr()
@@ -222,15 +216,15 @@ function TestNeighbor(direction)
 endfunction
 
 
-nnoremap <C-Up> :call TopSeparator(5)<cr>
-nnoremap <C-Down> :call TopSeparator(-5)<cr>
-nnoremap <C-Left> :call LeftSeparator(-10)<cr>
-nnoremap <C-Right> :call LeftSeparator(10)<cr>
+nnoremap <silent> <C-Up> :call TopSeparator(2)<cr>
+nnoremap <silent> <C-Down> :call TopSeparator(-2)<cr>
+nnoremap <silent> <C-Left> :call LeftSeparator(-2)<cr>
+nnoremap <silent> <C-Right> :call LeftSeparator(2)<cr>
 
-nnoremap <Up> :call BottomSeparator(5)<cr>
-nnoremap <Down> :call BottomSeparator(-5)<cr>
-nnoremap <Left> :call RightSeparator(-10)<cr>
-nnoremap <Right> :call RightSeparator(10)<cr>
+nnoremap <silent> <Up> :call BottomSeparator(2)<cr>
+nnoremap <silent> <Down> :call BottomSeparator(-2)<cr>
+nnoremap <silent> <Left> :call RightSeparator(-2)<cr>
+nnoremap <silent> <Right> :call RightSeparator(2)<cr>
 
 "inoremap <C-Up> <ESC>:call TopSeparator(5)<cr>a
 "inoremap <C-Down> <ESC>:call TopSeparator(-5)<cr>a
@@ -242,3 +236,11 @@ nnoremap <Right> :call RightSeparator(10)<cr>
 "inoremap <Left> <ESC>:call RightSeparator(-10)<cr>a
 "inoremap <Right> <ESC>:call RightSeparator(10)<cr>a
 " }}}
+
+" Other Settings
+au FileType perl set filetype=prolog
+
+" signature, email
+iabbrev ssig Titouan Teyssier<cr>titouan dot teyssier at gmail dot com<cr>
+iabbrev @@ titouan dot teyssier at gmail dot com
+
