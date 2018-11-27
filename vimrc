@@ -119,7 +119,8 @@ nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <silent> <leader>sv :source $MYVIMRC<cr><cr>
 
 " Instant Hide mode
-nnoremap <leader>w myggg?G`y
+"nnoremap <leader>w myggg?G`y
+nnoremap <leader>w :w<cr>
 
 " Highlight from search are no longer a problem whith that map
 nnoremap <leader><Space> :noh<cr>
@@ -135,9 +136,15 @@ nnoremap k gk
 nnoremap <leader>v :only<cr>
 
 nnoremap <leader>zz :let &scrolloff=999-&scrolloff<CR>
-nnoremap <cr> o<esc>k
-nnoremap <C-cr> O<esc>j
 
+" terminal mappings {{{
+nnoremap <leader>t :vertical term<cr>
+tnoremap jk <C-W>N
+tnoremap <C-h> <C-w>h
+tnoremap <C-j> <C-w>j
+tnoremap <C-k> <C-w>k
+tnoremap <C-l> <C-w>l
+" }}}
 
 " }}}
 
@@ -167,6 +174,7 @@ function! LeftSeparator(deltaW)
 	wincmd h " going to the left window
 	call RightSeparator(a:deltaW)
 	execute l:currentWindow . "wincmd w"
+	return 1
 endfunction
 
 " move the right separator right(+) and left(-)
@@ -179,6 +187,7 @@ function! RightSeparator(deltaW)
 	else
 		execute "vertical resize " . a:deltaW
 	endif
+	return 1
 endfunction
 
 
@@ -192,6 +201,7 @@ function! BottomSeparator(deltaW)
 	else
 		execute "resize +" . -a:deltaW
 	endif
+	return 1
 endfunction
 
 " move the top separator of the window up and down
@@ -203,6 +213,7 @@ function! TopSeparator(deltaW)
 	wincmd k
 	call BottomSeparator(a:deltaW)
 	execute l:currentWindow . "wincmd w"
+	return 1
 endfunction
 
 function! TestNeighbor(direction)
@@ -215,16 +226,29 @@ function! TestNeighbor(direction)
 	endif
 endfunction
 
+" moves the right the separator if it exist, if not moves the left one
+function! Right_fbLeftSeparator(n)
+	if !RightSeparator(a:n)
+		call LeftSeparator(a:n)
+	endif
+endfunction
+
+" moves the bottom the separator if it exist, if not moves the top one
+function! Bottom_fbTopSeparator(n)
+	if !BottomSeparator(a:n)
+		call TopSeparator(a:n)
+	endif
+endfunction
 
 nnoremap <silent> <C-Up> :call TopSeparator(2)<cr>
 nnoremap <silent> <C-Down> :call TopSeparator(-2)<cr>
 nnoremap <silent> <C-Left> :call LeftSeparator(-2)<cr>
 nnoremap <silent> <C-Right> :call LeftSeparator(2)<cr>
 
-nnoremap <silent> <Up> :call BottomSeparator(2)<cr>
-nnoremap <silent> <Down> :call BottomSeparator(-2)<cr>
-nnoremap <silent> <Left> :call RightSeparator(-2)<cr>
-nnoremap <silent> <Right> :call RightSeparator(2)<cr>
+nnoremap <silent> <Up> :call Bottom_fbTopSeparator(2)<cr>
+nnoremap <silent> <Down> :call Bottom_fbTopSeparator(-2)<cr>
+nnoremap <silent> <Left> :call Right_fbLeftSeparator(-2)<cr>
+nnoremap <silent> <Right> :call Right_fbLeftSeparator(2)<cr>
 
 "inoremap <C-Up> <ESC>:call TopSeparator(5)<cr>a
 "inoremap <C-Down> <ESC>:call TopSeparator(-5)<cr>a
@@ -239,8 +263,6 @@ nnoremap <silent> <Right> :call RightSeparator(2)<cr>
 
 " Other Settings
 au FileType perl set filetype=prolog
-
-
 
 " signature, email
 iabbrev ssig Titouan Teyssier<cr>titouan dot teyssier at gmail dot com<cr>
