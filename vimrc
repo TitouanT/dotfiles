@@ -16,9 +16,16 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 
+"jupyter notebook
+" Plugin 'szymonmaszke/vimpyter'
 " git repos
 " TODO: learn to use it
-"Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rhubarb'
+Plugin 'tpope/vim-surround'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'shumphrey/fugitive-gitlab.vim'
+let g:fugitive_gitlab_domains = ['https://git-lium.univ-lemans.fr']
 
 " file explorer
 " TODO: learn to use it
@@ -26,8 +33,10 @@ Plugin 'VundleVim/Vundle.vim'
 
 " syntax
 Plugin 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['haskell']
 Plugin 'vim-scripts/clips.vim'
 Plugin 'mxw/vim-prolog'
+Plugin 'posva/vim-vue'
 
 " completition
 Plugin 'Valloric/YouCompleteMe'
@@ -36,15 +45,17 @@ Plugin 'Valloric/YouCompleteMe'
 "python install.py --clang-completer --go-completer --java-completer
 
 " theme
-" Plugin 'ajmwagar/vim-deus'
 Plugin 'fatih/molokai'
 
 Plugin 'itchyny/lightline.vim'
 
-" animated scroll
-"Plugin 'joeytwiddle/sexy_scroller.vim'
 
 Plugin 'tpope/vim-commentary'
+
+Plugin 'TitouanT/vim-serie'
+
+Plugin 'Townk/vim-autoclose'
+Plugin 'chrisbra/unicode.vim'
 
 call vundle#end()
 " }}}
@@ -87,7 +98,8 @@ filetype indent on
 " active le comportement 'habituel' de la touche retour en arriere
 set backspace=indent,eol,start
 " settings for hidden chars
-set listchars=tab:>\ ,trail:▓
+" set listchars=tab:>\ ,trail:▓
+set listchars=tab:│\ ,trail:▓
 " show hidden chars
 set list
 set mouse=a
@@ -98,32 +110,50 @@ set hidden
 set noerrorbells
 set novisualbell
 set number
+set relativenumber
+set autoindent
 set wrap
+set breakindent
+set updatetime=100
+set timeoutlen=1000 ttimeoutlen=0
+let g:ycm_autoclose_preview_window_after_completion = 1
+
+" standard numbers in insert mode
+augroup numbertoggle
+	autocmd!
+	autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+	autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 " }}}
 
 " Mappings {{{
 let mapleader = ","
 " Remap de la touche echap pour revenir en mode normal
 inoremap jk <Esc>
-vnoremap jk <Esc>
-
+inoremap kj <Esc>
+" vnoremap <leader>q <Esc>
 " Acces plus rapide au registre:
 inoremap <leader>r <C-r>
 
 " Move one line up and one line down
-nnoremap J :m .+1<CR>==
-nnoremap K :m .-2<CR>==
+" nnoremap J :m .+1<CR>==
+" nnoremap K :m .-2<CR>==
+
+" quick edit of my notes
+nnoremap <leader>en :e $HOME/.vim/perso/notes.txt<cr>
+nnoremap <leader>es :e $HOME/.vim/perso/tracker.serie<cr>
 
 " quick edit and reload of vimrc
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-nnoremap <silent> <leader>sv :source $MYVIMRC<cr><cr>
+nnoremap <silent> <leader>sv :source $MYVIMRC<cr>:noh<cr>
 
 " Instant Hide mode
-"nnoremap <leader>w myggg?G`y
+nnoremap <leader>c myggg?G`y
 nnoremap <leader>w :w<cr>
-
+nnoremap <leader>q :wq<cr>
+inoremap <leader>q <esc>:wq<cr>
 " Highlight from search are no longer a problem whith that map
-nnoremap <leader><Space> :noh<cr>
+nnoremap <silent> <leader><Space> :noh<cr>
 " center on space
 nnoremap <Space> zz
 
@@ -137,14 +167,36 @@ nnoremap <leader>v :only<cr>
 
 nnoremap <leader>zz :let &scrolloff=999-&scrolloff<CR>
 
+" easy boolean logic because pipe is hard to found
+iabbrev p \|
+iabbrev pp \|\|
+iabbrev ea []
+iabbrev eo {}
+iabbrev ep ()
+
+" vnoremap <tab> >gv
+" vnoremap <S-tab> <gv
+" delete the content of the current line
+" nnoremap D _D
+
+" create a box around a line and comment it TODO create a function and apply
+" it to a text object
+" nnoremap gb 0i# <esc>A #<esc>YpVr#YkPj:-1,+1Commentary<cr>
+" nnoremap gb ^d0i# <C-o>$ #<esc>YpVr#YkP:,+2Commentary<CR>=2jj
+nnoremap gb ^d0i│ <esc>A │<esc>YPVjr─p+r└$r┘2-r┌$r┐:,+2Commentary<CR>=2jj
+" nnoremap <leader>z !!serieInfo<CR>
+" vnoremap <leader>z !serieInfo<CR>
+" }}}
+
 " terminal mappings {{{
 nnoremap <leader>t :vertical term<cr>
-tnoremap jk <C-W>N
+nnoremap <leader>ht :term<cr>
+" tnoremap jk <C-W>N
+tnoremap <leader>q <C-W>N
 tnoremap <C-h> <C-w>h
 tnoremap <C-j> <C-w>j
 tnoremap <C-k> <C-w>k
 tnoremap <C-l> <C-w>l
-" }}}
 
 " }}}
 
@@ -158,6 +210,8 @@ set showcmd
 augroup filetype_vim
 	autocmd!
 	autocmd FileType vim setlocal foldmethod=marker
+	" autocmd FileType vim setlocal foldmarker={{{,}}}
+	" autocmd FileType vim setlocal foldtext=foldtext()
 augroup end
 " }}}
 
@@ -263,8 +317,16 @@ nnoremap <silent> <Right> :call Right_fbLeftSeparator(2)<cr>
 
 " Other Settings
 au FileType perl set filetype=prolog
+au FileType jess set filetype=clips
+au FileType javascript set filetype=javascript.jsx
+autocmd FileType clips setlocal commentstring=;\ %s
 
 " signature, email
 iabbrev ssig Titouan Teyssier<cr>titouan dot teyssier at gmail dot com<cr>
 iabbrev @@ titouan dot teyssier at gmail dot com
 
+" autocmd BufEnter *png,*jpg,*jpeg,*gif exec "! w3m -o ext_image_viewer=0 ".expand("%") | :bw
+
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
