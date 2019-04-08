@@ -15,6 +15,8 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+" Plugin 'junegunn/vim-emoji'
+Plugin 'kyuhi/vim-emoji-complete'
 
 "jupyter notebook
 " Plugin 'szymonmaszke/vimpyter'
@@ -142,6 +144,7 @@ inoremap <leader>r <C-r>
 " quick edit of my notes
 nnoremap <leader>en :e $HOME/.vim/perso/notes.txt<cr>
 nnoremap <leader>es :e $HOME/.vim/perso/tracker.serie<cr>
+nnoremap <leader>em :e $HOME/.vim/perso/master_stage.txt<cr>
 
 " quick edit and reload of vimrc
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
@@ -168,8 +171,8 @@ nnoremap <leader>v :only<cr>
 nnoremap <leader>zz :let &scrolloff=999-&scrolloff<CR>
 
 " easy boolean logic because pipe is hard to found
-iabbrev p \|
-iabbrev pp \|\|
+" iabbrev p \|
+" iabbrev pp \|\|
 iabbrev ea []
 iabbrev eo {}
 iabbrev ep ()
@@ -327,6 +330,7 @@ iabbrev @@ titouan dot teyssier at gmail dot com
 
 " autocmd BufEnter *png,*jpg,*jpeg,*gif exec "! w3m -o ext_image_viewer=0 ".expand("%") | :bw
 
+" cursor shape
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
