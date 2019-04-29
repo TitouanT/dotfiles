@@ -5,7 +5,10 @@ export PATH=$HOME/bin:$HOME/.treetagger/cmd:$HOME/.treetagger/bin:$PATH
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
+export BROWSER=/opt/google/chrome/chrome
 
+
+# ZSH_THEME="bira"
 ZSH_THEME="agnoster"
 DEFAULT_USER="t2"
 
@@ -19,10 +22,6 @@ DEFAULT_USER="t2"
 plugins=(git autojump zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 
 # alias hop="cd $HOME/fac/l3/hop3x; nohup sh H3Etudiant.sh > /dev/null 2>&1 &; cd ./hop3xEtudiant/data/"
@@ -41,13 +40,52 @@ alias pv="vim -"
 alias vi="vim"
 alias ivm="vim"
 alias v="vim"
+alias nano='vim'
 alias vom="vim"
 alias ls="lsd"
 alias clip="xclip -rmlastnl -selection clipboard"
+alias vg="node ~/vimgolf/play.js "
+alias lastcmd="fc -lnr -1"
+
+
+
+# alias grn="grep -Rn"
+alias grnc="grep -Rn -C 3"
+
+function grn() {
+	grep -Rni --color=always $@ | awk -F: '{gsub(/\t+/, "", $3); print $1 ":" $2 ":" $3}' | column -s: -t
+}
+# grn --color=always TODO | awk -F: '{gsub(/^\t+|\t+$/, "", $3); print $1 ":" $2 ":" $3}'
+
+bindkey -v
+
 
 # ls after every cd
 function list_all() {
     emulate -L zsh
-    lsd -a
+    lsd
 }
 chpwd_functions=(${chpwd_functions[@]} "list_all")
+
+# use treetagger to tag the arguments
+function tag() {
+	echo $@ | tree-tagger-french
+}
+
+# ssh
+
+# ssh-agent setup
+SSH_AGENT_ENV=~/.ssh/agent.env
+
+# source the agent env
+. $SSH_AGENT_ENV &> /dev/null
+
+# if the env is inexistant or the agent is not alive anymore then make a new one
+if ! kill -0 $SSH_AGENT_PID &> /dev/null
+then
+	# create an agent
+	ssh-agent > $SSH_AGENT_ENV
+	. $SSH_AGENT_ENV &> /dev/null
+	# ssh-add # I prefer to do it when I need it
+fi
+

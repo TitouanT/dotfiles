@@ -15,8 +15,12 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'xuhdev/vim-latex-live-preview'
+Plugin 'c0r73x/vimdir.vim'
 " Plugin 'junegunn/vim-emoji'
-Plugin 'kyuhi/vim-emoji-complete'
+" Plugin 'kyuhi/vim-emoji-complete'
+"
+Plugin 'SirVer/ultisnips'
 
 "jupyter notebook
 " Plugin 'szymonmaszke/vimpyter'
@@ -118,6 +122,7 @@ set wrap
 set breakindent
 set updatetime=100
 set timeoutlen=1000 ttimeoutlen=0
+set guioptions=
 let g:ycm_autoclose_preview_window_after_completion = 1
 
 " standard numbers in insert mode
@@ -137,24 +142,37 @@ inoremap kj <Esc>
 " Acces plus rapide au registre:
 inoremap <leader>r <C-r>
 
+nnoremap <silent> <leader>T Yp!!tree-tagger-french 2> /dev/null \| column -t<cr>
+" nnoremap <silent> <leader>n :execute "! npm start &"<cr>:redraw!<cr>
+nnoremap <silent> <leader>n :vertical terminal <cr> npm start<cr><C-W><C-H>
 " Move one line up and one line down
 " nnoremap J :m .+1<CR>==
 " nnoremap K :m .-2<CR>==
 
-" quick edit of my notes
+" quick edit of my
+" notes
 nnoremap <leader>en :e $HOME/.vim/perso/notes.txt<cr>
+" series
 nnoremap <leader>es :e $HOME/.vim/perso/tracker.serie<cr>
+" master internship journal
 nnoremap <leader>em :e $HOME/.vim/perso/master_stage.txt<cr>
-
-" quick edit and reload of vimrc
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+" vimrc
+nnoremap <leader>ev :e $MYVIMRC<cr>
 nnoremap <silent> <leader>sv :source $MYVIMRC<cr>:noh<cr>
+" i3rc
+nnoremap <leader>ei :e $HOME/.config/i3/config<cr>
+" zshrc
+nnoremap <leader>ez :e $HOME/.zshrc<cr>
 
 " Instant Hide mode
 nnoremap <leader>c myggg?G`y
+
+" Save and Quit
 nnoremap <leader>w :w<cr>
+" maybe ZZ
 nnoremap <leader>q :wq<cr>
 inoremap <leader>q <esc>:wq<cr>
+
 " Highlight from search are no longer a problem whith that map
 nnoremap <silent> <leader><Space> :noh<cr>
 " center on space
@@ -166,7 +184,10 @@ nnoremap <C-u> <C-u>zz
 nnoremap j gj
 nnoremap k gk
 
+
 nnoremap <leader>v :only<cr>
+nnoremap <leader>d i<cr><cr><esc>k!! date +\%d/\%m/\%y<CR>k3J
+inoremap <leader>d <cr><cr><esc>k!! date +\%d/\%m/\%y<CR>k3Ja
 
 nnoremap <leader>zz :let &scrolloff=999-&scrolloff<CR>
 
@@ -207,6 +228,7 @@ tnoremap <C-l> <C-w>l
 set laststatus=2 " always show the status line
 set noshowmode
 set showcmd
+set statusline+=%{FugitiveStatusline()}
 " }}}
 
 " vimscript language settings {{{
