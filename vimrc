@@ -1,3 +1,4 @@
+" ~/.vim/vimrc
 " VIM Configuration - Titouan Teyssier
 " my vim configuration
 " ./configure \
@@ -118,7 +119,10 @@ set novisualbell
 set number
 set relativenumber
 set autoindent
-set wrap
+
+" start using z[sehlHL]
+set nowrap
+
 set breakindent
 set updatetime=100
 set timeoutlen=1000 ttimeoutlen=0
