@@ -1,12 +1,4 @@
-# Should you change your keyboard layout some time, delete
-# this file and re-run i3-config-wizard(1).
-#
-
-# i3 config file (v4)
-#
-# Please see https://i3wm.org/docs/userguide.html for a complete reference!
-
-
+# ~/.config/i3/config
 # set $mod Ctrl
 set $mod Mod1
 
@@ -179,10 +171,13 @@ bar {
 	modifier None
 }
 
+
 exec "setxkbmap us"
 exec "~/.fehbg"
 exec "~/bin/makeLockScreen.sh ~/Images/background/umbrella.jpg"
 bindsym $mod+Z exec i3lock -i ~/Images/background/lockscreen.png
+
+for_window [class="stdvim"] floating enable
 bindsym $mod+I exec echo -n "$(~/bin/stdvim)" | xclip -selection clipboard
 
 
