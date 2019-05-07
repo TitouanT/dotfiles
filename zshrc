@@ -1,3 +1,4 @@
+# ~/.zshrc
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 export PATH=$HOME/.gem/ruby/2.6.0/bin:$PATH
@@ -27,8 +28,8 @@ source $ZSH/oh-my-zsh.sh
 # alias hop="cd $HOME/fac/l3/hop3x; nohup sh H3Etudiant.sh > /dev/null 2>&1 &; cd ./hop3xEtudiant/data/"
 alias c="printf '\e[3J\e[H'"
 #alias c="clear && printf '\e[3J'"
-alias ip="ifconfig | grep -o '192\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,2\} '"
-alias ipp="dig +short myip.opendns.com @resolver1.opendns.com"
+alias ip="ifconfig | awk '/broadcast/ {print \$2}'"
+alias ipp="curl ifconfig.co"
 alias pl="swipl"
 alias prolog="swipl"
 alias :q=exit
@@ -53,7 +54,7 @@ alias lastcmd="fc -lnr -1"
 alias grnc="grep -Rn -C 3"
 
 function grn() {
-	grep -Rni --color=always $@ | awk -F: '{gsub(/\t+/, "", $3); print $1 ":" $2 ":" $3}' | column -s: -t
+	grep -Rni --color=always $@ | awk -F: '{gsub(/\t+/, "", $3); printf "%s:%s:", $1, $2; for (i=3; i<=NF; i++) {printf "%s ", $i}; printf "\n"}' | column -s: -t
 }
 # grn --color=always TODO | awk -F: '{gsub(/^\t+|\t+$/, "", $3); print $1 ":" $2 ":" $3}'
 
