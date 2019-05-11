@@ -1,8 +1,9 @@
 # ~/.zshrc
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-export PATH=$HOME/.gem/ruby/2.6.0/bin:$PATH
-export PATH=$HOME/bin:$HOME/.treetagger/cmd:$HOME/.treetagger/bin:$PATH
+export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/.gem/ruby/2.6.0/bin"
+export PATH="$PATH:$HOME/.treetagger/cmd:$HOME/.treetagger/bin"
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
