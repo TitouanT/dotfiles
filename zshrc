@@ -83,11 +83,11 @@ SSH_AGENT_ENV=~/.ssh/agent.env
 . $SSH_AGENT_ENV &> /dev/null
 
 # if the env is inexistant or the agent is not alive anymore then make a new one
-if ! kill -0 $SSH_AGENT_PID &> /dev/null
+if [ $(ps -u $(whoami) | awk "/^ *$SSH_AGENT_PID / { if ( \$4 == \"ssh-agent\" ) print 1 }" | wc -l) = 0 ]
 then
 	# create an agent
 	ssh-agent > $SSH_AGENT_ENV
 	. $SSH_AGENT_ENV &> /dev/null
-	# ssh-add # I prefer to do it when I need it
+	# see ssh config to automatically add key to the agent when unlocked
 fi
 
