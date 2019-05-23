@@ -16,40 +16,43 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'xuhdev/vim-latex-live-preview'
+" Plugin 'xuhdev/vim-latex-live-preview'
 Plugin 'c0r73x/vimdir.vim'
-" Plugin 'junegunn/vim-emoji'
-" Plugin 'kyuhi/vim-emoji-complete'
-"
-Plugin 'SirVer/ultisnips'
+"" Plugin 'junegunn/vim-emoji'
+"" Plugin 'kyuhi/vim-emoji-complete'
+""
+"Plugin 'SirVer/ultisnips'
 
-"jupyter notebook
-" Plugin 'szymonmaszke/vimpyter'
-" git repos
-" TODO: learn to use it
+""jupyter notebook
+"" Plugin 'szymonmaszke/vimpyter'
+"" git repos
+"" TODO: learn to use it
 Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-rhubarb'
+" Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-surround'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'shumphrey/fugitive-gitlab.vim'
 let g:fugitive_gitlab_domains = ['https://git-lium.univ-lemans.fr']
 
-" file explorer
-" TODO: learn to use it
-"Plugin 'sjbach/lusty'
+"" file explorer
+"" TODO: learn to use it
+""Plugin 'sjbach/lusty'
 
-" syntax
+"" syntax
 Plugin 'sheerun/vim-polyglot'
 let g:polyglot_disabled = ['haskell']
 Plugin 'vim-scripts/clips.vim'
 Plugin 'mxw/vim-prolog'
-Plugin 'posva/vim-vue'
+" Plugin 'posva/vim-vue'
 
-" completition
+"" completition
 Plugin 'Valloric/YouCompleteMe'
-" note to myself: here is how I installed YCM
-"git submodule update  --init --recursive
-"python install.py --clang-completer --go-completer --java-completer
+let g:ycm_key_list_stop_completion = ['<C-y>']
+" inoremap <C-K> <C-Y><C-K>
+inoremap <C-K> <esc>a<C-K>
+"" note to myself: here is how I installed YCM
+""git submodule update  --init --recursive
+""python install.py --clang-completer --go-completer --java-completer
 
 " theme
 Plugin 'fatih/molokai'
@@ -61,8 +64,10 @@ Plugin 'tpope/vim-commentary'
 
 Plugin 'TitouanT/vim-serie'
 
-Plugin 'Townk/vim-autoclose'
-Plugin 'chrisbra/unicode.vim'
+" Plugin 'Townk/vim-autoclose' " it slows down escape
+Plugin 'jiangmiao/auto-pairs'
+" let g:AutoPairsFlyMode = 1
+" Plugin 'chrisbra/unicode.vim'
 
 call vundle#end()
 " }}}
@@ -139,13 +144,14 @@ augroup END
 
 " Mappings {{{
 let mapleader = ","
+nnoremap <leader><leader> <leader>
+
 " Remap de la touche echap pour revenir en mode normal
 inoremap jk <Esc>
 inoremap kj <Esc>
 " vnoremap <leader>q <Esc>
 " Acces plus rapide au registre:
 inoremap <leader>r <C-r>
-
 nnoremap <silent> <leader>T Yp!!tree-tagger-french 2> /dev/null \| column -t<cr>
 " nnoremap <silent> <leader>n :execute "! npm start &"<cr>:redraw!<cr>
 nnoremap <silent> <leader>n :vertical terminal <cr> npm start<cr><C-W><C-H>
@@ -171,6 +177,11 @@ nnoremap <leader>ez :e $HOME/.zshrc<cr>
 " Instant Hide mode
 nnoremap <leader>c myggg?G`y
 
+" format json
+nnoremap <leader>j :%s:[{}[\],]:\r&\r:g<cr>:%s:[\s\n]*,:,:g<cr>:%s: *$::g<cr>:g:^\s*$:d<cr>:noh<cr>=gg
+" nnoremap <leader>j :%s:[{}[\],]:\r&\r:g<cr>:%s:\([\]}]\) *,$:\1,:g<cr>:%s: *$::g<cr>:g:^\s*$:d<cr>:noh<cr>=gg
+" nnoremap <leader>j :%s:[{[,]:&\r:g<cr>:%s:[}\]]:\r&:g<cr>:%s:\([\]}]\) *,$:\1,:g<cr>:%s: *$::g<cr>:g:^\s*$:d<cr>:noh<cr>=gg
+
 " Save and Quit
 nnoremap <leader>w :w<cr>
 " maybe ZZ
@@ -188,7 +199,9 @@ nnoremap <C-u> <C-u>zz
 nnoremap j gj
 nnoremap k gk
 
-
+" make
+nnoremap <leader>m :!make all &> /dev/null & disown<cr><cr>
+nnoremap <leader>M :!make &> /dev/null & disown<cr><cr>
 nnoremap <leader>v :only<cr>
 nnoremap <leader>d i<cr><cr><esc>k!! date +\%d/\%m/\%y<CR>k3J
 inoremap <leader>d <cr><cr><esc>k!! date +\%d/\%m/\%y<CR>k3Ja
@@ -232,7 +245,7 @@ tnoremap <C-l> <C-w>l
 set laststatus=2 " always show the status line
 set noshowmode
 set showcmd
-set statusline+=%{FugitiveStatusline()}
+" set statusline+=%{FugitiveStatusline()}
 " }}}
 
 " vimscript language settings {{{
