@@ -131,7 +131,7 @@ mode "resize" {
 	bindsym j resize grow down  50 px or 10 ppt
 	bindsym k resize grow up    50 px or 10 ppt
 
-	# You can shift to shrinh
+	# You can shift to shrink it
 	bindsym Shift+h resize shrink right 50 px or 10 ppt
 	bindsym Shift+l resize shrink left  50 px or 10 ppt
 	bindsym Shift+j resize shrink up    50 px or 10 ppt
@@ -170,6 +170,14 @@ bar {
 	mode dock
 	modifier None
 }
+popup_during_fullscreen smart
+
+# screenshots use maim instead
+bindsym Print exec gnome-screenshot -w
+bindsym Shift+Print exec gnome-screenshot -wc
+# bindsym Ctrl+Print exec notify-send hello
+bindsym Ctrl+Print exec gnome-screenshot -a
+bindsym Ctrl+Shift+Print exec gnome-screenshot -ac
 
 
 exec "setxkbmap us"
@@ -178,6 +186,7 @@ exec "~/bin/makeLockScreen.sh ~/Images/background/umbrella.jpg"
 bindsym $mod+Z exec i3lock -i ~/Images/background/lockscreen.png
 
 for_window [class="stdvim"] floating enable
+for_window [class="stdvim"] sticky enable
 bindsym $mod+I exec echo -n "$(~/bin/stdvim)" | xclip -selection clipboard
 
 
