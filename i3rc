@@ -180,26 +180,23 @@ bindsym Ctrl+Print exec gnome-screenshot -a
 bindsym Ctrl+Shift+Print exec gnome-screenshot -ac
 
 
-exec "setxkbmap us"
 exec "~/.fehbg"
 exec "~/bin/makeLockScreen.sh ~/Images/background/umbrella.jpg"
-exec "~/bin/peregrineWatch.sh ~/Images/background/umbrella.jpg"
 bindsym $mod+Z exec i3lock -i ~/Images/background/lockscreen.png
 
 for_window [class="stdvim"] floating enable
 for_window [class="stdvim"] sticky enable
-bindsym $mod+I exec echo -n "$(~/bin/stdvim)" | xclip -selection clipboard
+bindsym $mod+I exec echo -n "$(stdvim)" | xclip -selection clipboard
 
 
 
 default_border none
 focus_wrapping no
-bindcode 199 exec ~/bin/swaptouchpad.sh
+bindcode 199 exec swaptouchpad
 for_window [class="VerbatimAnalysis"] floating enable
 
 # gaps
 gaps inner 30
 
-exec "~/bin/swaptouchpad.sh"
-exec "sleep 60; ~/bin/peculiarWatch.sh"
-# exec "~/bin/peregrineWatch.sh start | tr '_' ' ' | sed \"s/%27/'/g\" | dmenu -l 10"
+exec "swaptouchpad"
+exec "sleep 60; peculiarWatch.sh"

@@ -171,6 +171,8 @@ nnoremap <leader>em :e $HOME/.vim/perso/master_stage.txt<cr>
 " vimrc
 nnoremap <leader>ev :e $MYVIMRC<cr>
 nnoremap <silent> <leader>sv :source $MYVIMRC<cr>:noh<cr>
+" profile
+nnoremap <leader>ep :e $HOME/.profile<cr>
 " i3rc
 nnoremap <leader>ei :e $HOME/.config/i3/config<cr>
 " zshrc
