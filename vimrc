@@ -69,6 +69,8 @@ Plugin 'jiangmiao/auto-pairs'
 " let g:AutoPairsFlyMode = 1
 " Plugin 'chrisbra/unicode.vim'
 
+Plugin 'justinmk/vim-sneak'
+let g:sneak#label = 1
 call vundle#end()
 " }}}
 

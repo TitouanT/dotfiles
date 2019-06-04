@@ -29,7 +29,7 @@ source $ZSH/oh-my-zsh.sh
 # alias hop="cd $HOME/fac/l3/hop3x; nohup sh H3Etudiant.sh > /dev/null 2>&1 &; cd ./hop3xEtudiant/data/"
 alias c="printf '\e[3J\e[H'"
 #alias c="clear && printf '\e[3J'"
-alias ip="ifconfig | awk '/broadcast/ {print \$2}'"
+alias ip='ifconfig | awk "/broadcast/ {print \$2}"'
 alias ipp="curl ifconfig.co"
 alias pl="swipl"
 alias prolog="swipl"
