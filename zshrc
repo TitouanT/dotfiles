@@ -38,7 +38,6 @@ alias :Q="shutdown 0"
 alias clp="node ~/code/node/clips_wrapper/clips_wrap.js"
 alias dp="termite &> /dev/null & disown"
 alias open="xdg-open &> /dev/null"
-alias pv="vim -"
 alias vi="vim"
 alias ivm="vim"
 alias v="vim"
@@ -83,8 +82,9 @@ SSH_AGENT_ENV=~/.ssh/agent.env
 . $SSH_AGENT_ENV &> /dev/null
 
 # if the env is inexistant or the agent is not alive anymore then make a new one
-if [ $(ps -u $(whoami) | awk "/^ *$SSH_AGENT_PID / { if ( \$4 == \"ssh-agent\" ) print 1 }" | wc -l) = 0 ]
+if [ "$(pidof ssh-agent)" != "$SSH_AGENT_PID" ]
 then
+	for pid in $(pidof ssh-agent); do kill -9 $pid; done;
 	# create an agent
 	ssh-agent > $SSH_AGENT_ENV
 	. $SSH_AGENT_ENV &> /dev/null
