@@ -186,9 +186,10 @@ bindsym $mod+Z exec i3lock -i ~/Images/background/lockscreen.png
 
 for_window [class="stdvim"] floating enable
 for_window [class="stdvim"] sticky enable
-bindsym $mod+I exec echo -n "$(stdvim)" | xclip -selection clipboard
+bindsym $mod+I exec stdvim | xclip -rmlastnl -selection clipboard
+bindsym $mod+Shift+I exec xclip -o -selection primary | stdvim | xclip -rmlastnl -selection clipboard
 
-
+bindsym $mod+m exec setxkbmap -option caps:swapescape
 
 default_border none
 focus_wrapping no
